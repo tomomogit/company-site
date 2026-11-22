@@ -1,0 +1,24 @@
+{
+    "permissions":{
+        "allow":[
+            "Bash(npm test)",
+            "Bash(npm run *)",
+            "Bash(git status)",
+            "Bash(git diff *)",
+            "Bash(touch *)",
+            "Bash(cp *)",
+            "Edit",
+            "Write"
+        ],
+        "deny":[
+            "Bash(sudo *)",
+            "Bash(rm -rf *)",
+            "Read(.env*)"
+        ],
+        "ask":[
+            "Bash(rm *)",
+            "Bash(git push *)",
+            "Bash(curl *)"
+        ]
+    }
+}
