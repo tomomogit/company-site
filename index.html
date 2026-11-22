@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>スカイライン・テクノロジーズ</title>
+<meta name="description" content="スカイライン・テクノロジーズは、クラウド・AI・業務システムの受託開発を行うソフトウェア開発会社です。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f9fc;
+    --surface: #ffffff;
+    --surface-2: #eef3fa;
+    --text: #0f1b2d;
+    --muted: #55657a;
+    --line: #dbe3ee;
+    --brand: #1f6feb;
+    --brand-2: #0bb5c9;
+    --brand-ink: #ffffff;
+    --hero-from: #0b2a5b;
+    --hero-to: #1f6feb;
+    --shadow: 0 10px 30px rgba(15, 27, 45, .08);
+    --radius: 16px;
+    --max: 1120px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b1220;
+      --surface: #111a2c;
+      --surface-2: #16223a;
+      --text: #e6edf7;
+      --muted: #9aabc2;
+      --line: #22314d;
+      --brand: #4c8dff;
+      --brand-2: #2fd4e6;
+      --hero-from: #061024;
+      --hero-to: #143a7a;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1220;
+    --surface: #111a2c;
+    --surface-2: #16223a;
+    --text: #e6edf7;
+    --muted: #9aabc2;
+    --line: #22314d;
+    --brand: #4c8dff;
+    --brand-2: #2fd4e6;
+    --hero-from: #061024;
+    --hero-to: #143a7a;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 112px; }
+  html.notice-closed { scroll-padding-top: 72px; }
+  body {
+    font-family: "Noto Sans JP", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+  .container { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+  @media (min-width: 768px) { .container { padding: 0 32px; } }
+
+  /* Header */
+  header {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    transition: background .3s, box-shadow .3s;
+  }
+  header.scrolled {
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 1px 0 var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-family: Inter, sans-serif; letter-spacing: .02em; color: #fff; }
+  header.scrolled .logo, header.scrolled .nav-links a { color: var(--text); }
+  .logo-mark { width: 34px; height: 34px; }
+  .logo small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .2em; opacity: .75; line-height: 1; }
+  .nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+  .nav-links a { color: #fff; font-size: 14px; font-weight: 500; opacity: .9; }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    background: #fff; color: var(--hero-from) !important; padding: 8px 18px; border-radius: 999px; font-weight: 700 !important; opacity: 1 !important;
+  }
+  header.scrolled .nav-cta { background: var(--brand); color: var(--brand-ink) !important; }
+  .menu-btn { display: none; background: none; border: 0; color: #fff; cursor: pointer; padding: 8px; }
+  header.scrolled .menu-btn { color: var(--text); }
+  @media (max-width: 860px) {
+    .menu-btn { display: block; }
+    .nav-links {
+      position: fixed; inset: 68px 0 auto 0; flex-direction: column; gap: 0;
+      background: var(--surface); border-bottom: 1px solid var(--line);
+      padding: 8px 16px 20px; transform: translateY(-120%); transition: transform .3s;
+      box-shadow: var(--shadow);
+    }
+    .nav-links.open { transform: none; }
+    .nav-links li { width: 100%; }
+    .nav-links a { color: var(--text) !important; display: block; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .nav-cta { text-align: center; margin-top: 12px; border: 0 !important; background: var(--brand) !important; color: #fff !important; }
+  }
+
+  /* Notice bar */
+  .notice {
+    background: var(--surface); border-bottom: 1px solid var(--line);
+    font-size: 13.5px; color: var(--text);
+  }
+  .notice[hidden] { display: none; }
+  .notice-inner { display: flex; align-items: center; gap: 12px; height: 40px; }
+  .notice-badge {
+    flex: none; font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #fff;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2)); padding: 2px 10px; border-radius: 999px;
+  }
+  .notice-track { position: relative; flex: 1; min-width: 0; height: 100%; overflow: hidden; }
+  .notice-item {
+    position: absolute; inset: 0; display: flex; align-items: center; gap: 10px;
+    opacity: 0; transform: translateY(100%); transition: opacity .5s, transform .5s; pointer-events: none;
+  }
+  .notice-item.active { opacity: 1; transform: none; pointer-events: auto; }
+  .notice-item.leaving { opacity: 0; transform: translateY(-100%); }
+  .notice-item time { flex: none; font-family: Inter, sans-serif; color: var(--muted); font-size: 12.5px; }
+  .notice-item span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .notice-item:hover span { color: var(--brand); text-decoration: underline; }
+  .notice-more { flex: none; color: var(--brand); font-weight: 700; font-size: 12.5px; }
+  .notice-close {
+    flex: none; background: none; border: 0; color: var(--muted); cursor: pointer;
+    width: 28px; height: 28px; border-radius: 6px; display: grid; place-items: center;
+  }
+  .notice-close:hover { background: var(--surface-2); color: var(--text); }
+  @media (max-width: 600px) { .notice-more, .notice-item time { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .notice-item { transition: none; } }
+
+  /* Hero */
+  .hero {
+    position: relative; overflow: hidden; color: #fff;
+    background: linear-gradient(160deg, var(--hero-from) 0%, var(--hero-to) 100%);
+    padding: 190px 0 120px;
+  }
+  html.notice-closed .hero { padding-top: 150px; }
+  .hero-skyline { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: 160px; opacity: .22; }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: .12;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 70% 30%, #000 0%, transparent 65%);
+  }
+  .hero .container { position: relative; }
+  .eyebrow { font-family: Inter, sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .25em; text-transform: uppercase; color: var(--brand-2); }
+  .hero .eyebrow { color: #8fe9f4; }
+  .hero h1 { font-size: clamp(32px, 6vw, 60px); font-weight: 900; line-height: 1.3; margin: 16px 0 24px; letter-spacing: .02em; }
+  .hero h1 span { background: linear-gradient(90deg, #8fe9f4, #fff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { max-width: 560px; font-size: clamp(15px, 2vw, 17px); opacity: .88; }
+  .hero-actions { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 999px;
+    font-weight: 700; font-size: 15px; transition: transform .2s, box-shadow .2s, background .2s; border: 0; cursor: pointer; font-family: inherit;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: #fff; color: var(--hero-from); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+  .btn-ghost { color: #fff; border: 1px solid rgba(255,255,255,.4); }
+  .btn-ghost:hover { background: rgba(255,255,255,.1); }
+
+  /* Sections */
+  section { padding: 96px 0; }
+  .section-head { margin-bottom: 48px; }
+  .section-head h2 { font-size: clamp(26px, 4vw, 38px); font-weight: 900; line-height: 1.4; margin-top: 8px; }
+  .section-head p { color: var(--muted); margin-top: 12px; max-width: 640px; }
+  .center { text-align: center; }
+  .center p { margin-left: auto; margin-right: auto; }
+
+  /* Stats */
+  .stats { margin-top: -56px; position: relative; z-index: 2; padding: 0; }
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--line);
+  }
+  .stat { padding: 28px 20px; text-align: center; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat-num { font-family: Inter, sans-serif; font-size: clamp(28px, 4vw, 40px); font-weight: 800; color: var(--brand); line-height: 1.2; }
+  .stat-num small { font-size: .5em; margin-left: 2px; }
+  .stat-label { font-size: 13px; color: var(--muted); }
+  @media (max-width: 700px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  }
+
+  /* Services */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 32px 28px; transition: transform .25s, box-shadow .25s, border-color .25s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--brand) 40%, var(--line)); }
+  .icon {
+    width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; margin-bottom: 20px;
+  }
+  .card h3 { font-size: 19px; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 14.5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .tag { font-size: 12px; padding: 2px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-family: Inter, sans-serif; }
+
+  /* About / Strength */
+  .alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; gap: 40px; } }
+  .strengths { list-style: none; display: grid; gap: 24px; }
+  .strengths li { display: grid; grid-template-columns: 48px 1fr; gap: 16px; }
+  .strengths .no { font-family: Inter, sans-serif; font-weight: 800; font-size: 28px; color: var(--brand); line-height: 1.2; }
+  .strengths h3 { font-size: 17px; }
+  .strengths p { color: var(--muted); font-size: 14.5px; }
+  .visual {
+    aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden; position: relative;
+    background: linear-gradient(160deg, var(--hero-from), var(--hero-to));
+    box-shadow: var(--shadow);
+  }
+  .code-window {
+    position: absolute; inset: 12% 10%; background: rgba(5, 12, 28, .78); border-radius: 12px;
+    border: 1px solid rgba(255,255,255,.12); padding: 16px 18px; font-family: ui-monospace, Consolas, monospace;
+    font-size: clamp(11px, 1.4vw, 13px); color: #cfe0ff; line-height: 1.9; overflow: hidden;
+  }
+  .dots { display: flex; gap: 6px; margin-bottom: 12px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+  .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+  .k { color: #ff9ad5; } .f { color: #8fe9f4; } .s { color: #b5f29a; } .c { color: #6f85a8; }
+
+  /* Process */
+  .process { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; counter-reset: step; }
+  .step { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 20px; }
+  .step::before {
+    counter-increment: step; content: "STEP " counter(step);
+    font-family: Inter, sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .15em; color: var(--brand-2);
+  }
+  .step h3 { font-size: 16px; margin: 6px 0 6px; }
+  .step p { font-size: 13.5px; color: var(--muted); }
+  @media (max-width: 960px) { .process { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .process { grid-template-columns: 1fr; } }
+
+  /* Works */
+  .works { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .works { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .works { grid-template-columns: 1fr; } }
+  .work { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: transform .25s, box-shadow .25s; }
+  .work:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .work-thumb { aspect-ratio: 16 / 9; display: grid; place-items: center; color: rgba(255,255,255,.95); }
+  .work-thumb svg { width: 56px; height: 56px; }
+  .t1 { background: linear-gradient(135deg, #1f6feb, #0bb5c9); }
+  .t2 { background: linear-gradient(135deg, #7b5cff, #1f6feb); }
+  .t3 { background: linear-gradient(135deg, #0b9e7a, #0bb5c9); }
+  .work-body { padding: 20px 22px 24px; }
+  .work-cat { font-size: 12px; color: var(--brand); font-weight: 700; }
+  .work h3 { font-size: 17px; margin: 4px 0 6px; }
+  .work p { font-size: 14px; color: var(--muted); }
+
+  /* News */
+  .news { list-style: none; border-top: 1px solid var(--line); }
+  .news li { display: grid; grid-template-columns: 120px 100px 1fr; gap: 16px; align-items: center; padding: 20px 4px; border-bottom: 1px solid var(--line); }
+  .news time { font-family: Inter, sans-serif; color: var(--muted); font-size: 14px; }
+  .news .label { font-size: 12px; text-align: center; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); color: var(--brand); font-weight: 700; }
+  @media (max-width: 600px) { .news li { grid-template-columns: auto auto 1fr; } .news li span:last-child { grid-column: 1 / -1; } }
+
+  /* Company */
+  .company-table { width: 100%; border-collapse: collapse; }
+  .company-table th, .company-table td { text-align: left; padding: 16px 8px; border-bottom: 1px solid var(--line); vertical-align: top; font-size: 15px; }
+  .company-table th { width: 30%; color: var(--muted); font-weight: 500; white-space: nowrap; }
+  .map {
+    border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface-2);
+    aspect-ratio: 4 / 3; display: grid; place-items: center; color: var(--muted); position: relative; overflow: hidden;
+  }
+  .map svg { width: 100%; height: 100%; position: absolute; inset: 0; }
+  .map-pin { position: relative; text-align: center; font-size: 14px; background: var(--surface); padding: 10px 16px; border-radius: 12px; box-shadow: var(--shadow); }
+  .map-pin strong { color: var(--text); display: block; }
+
+  /* Contact */
+  .contact { background: linear-gradient(160deg, var(--hero-from), var(--hero-to)); color: #fff; }
+  .contact .section-head p { color: rgba(255,255,255,.8); }
+  .contact .eyebrow { color: #8fe9f4; }
+  form { background: var(--surface); color: var(--text); border-radius: 20px; padding: 32px; box-shadow: 0 20px 50px rgba(0,0,0,.25); max-width: 720px; margin: 0 auto; display: grid; gap: 18px; }
+  @media (max-width: 600px) { form { padding: 24px 18px; } }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+  label { font-size: 14px; font-weight: 700; display: block; margin-bottom: 6px; }
+  label .req { color: #e5484d; font-size: 12px; margin-left: 6px; }
+  input, select, textarea {
+    width: 100%; font: inherit; font-size: 15px; padding: 12px 14px; border-radius: 10px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text); transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent); }
+  textarea { min-height: 140px; resize: vertical; }
+  form .btn { justify-self: center; background: var(--brand); color: #fff; padding: 14px 48px; }
+  .form-msg { text-align: center; font-weight: 700; color: var(--brand); min-height: 1.5em; }
+
+  /* Footer */
+  footer { background: #071022; color: #9aabc2; padding: 48px 0 32px; font-size: 14px; }
+  .footer-inner { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: center; }
+  footer .logo { color: #fff; }
+  footer nav { display: flex; gap: 20px; flex-wrap: wrap; }
+  footer nav a:hover { color: #fff; }
+  .copy { margin-top: 32px; padding-top: 24px; border-top: 1px solid #1a2740; font-size: 12px; text-align: center; }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header id="header">
+  <div class="container nav">
+    <a href="#top" class="logo" aria-label="スカイライン・テクノロジーズ トップへ">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+        <path d="M8 30V22h5v-6h5v-8h4v8h5v4h5v10z" fill="#fff"/>
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="40" y2="40"><stop stop-color="#1f6feb"/><stop offset="1" stop-color="#0bb5c9"/></linearGradient></defs>
+      </svg>
+      <span>SKYLINE<small>TECHNOLOGIES</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="navLinks">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#services">事業内容</a></li>
+      <li><a href="#about">私たちの強み</a></li>
+      <li><a href="#works">導入事例</a></li>
+      <li><a href="#news">お知らせ</a></li>
+      <li><a href="#company">会社概要</a></li>
+      <li><a href="#contact" class="nav-cta">お問い合わせ</a></li>
+    </ul>
+  </div>
+  <div class="notice" id="notice" role="region" aria-label="お知らせ">
+    <div class="container notice-inner">
+      <span class="notice-badge">NEWS</span>
+      <div class="notice-track" aria-live="polite">
+        <a href="#news" class="notice-item active"><time datetime="2026-11-10">2026.11.10</time><span>生成AI導入支援パッケージ「Skyline AI Starter」の提供を開始しました</span></a>
+        <a href="#news" class="notice-item"><time datetime="2026-10-01">2026.10.01</time><span>福岡オフィスを開設しました</span></a>
+        <a href="#news" class="notice-item"><time datetime="2026-08-20">2026.08.20</time><span>「クラウドネイティブ・カンファレンス 2026」に登壇しました</span></a>
+      </div>
+      <a href="#news" class="notice-more">一覧へ →</a>
+      <button class="notice-close" id="noticeClose" aria-label="お知らせを閉じる">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <svg class="hero-skyline" viewBox="0 0 1440 160" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#fff" d="M0 160V110h40V80h30v30h20V60h40v50h30V90h25V40h35v70h20V70h40v40h30V20h30v90h25V85h45v25h20V55h35v55h30V75h40v35h20V30h28v80h22V95h40v15h30V65h35v45h25V45h40v65h20V80h30v30h35V15h30v95h25V70h40v40h30V90h25V50h40v60h20V85h30v25h40V60h30v50h25V100h35V160z"/>
+    </svg>
+    <div class="container">
+      <p class="eyebrow">Software for the next horizon</p>
+      <h1>テクノロジーで、<br><span>ビジネスの地平線</span>を<br>押し広げる。</h1>
+      <p>スカイライン・テクノロジーズは、クラウド・AI・業務システムの設計から開発、運用までを一気通貫で支えるソフトウェア開発会社です。お客様と同じ景色を見ながら、事業の成長に寄り添います。</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">無料で相談する
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#services" class="btn btn-ghost">事業内容を見る</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid reveal">
+        <div class="stat"><div class="stat-num" data-count="320">0<small>+</small></div><div class="stat-label">開発プロジェクト実績</div></div>
+        <div class="stat"><div class="stat-num" data-count="98">0<small>%</small></div><div class="stat-label">顧客継続率</div></div>
+        <div class="stat"><div class="stat-num" data-count="140">0<small>名</small></div><div class="stat-label">エンジニア数</div></div>
+        <div class="stat"><div class="stat-num" data-count="15">0<small>年</small></div><div class="stat-label">創業からの歩み</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Services</p>
+        <h2>事業内容</h2>
+        <p>構想段階のアイデアから大規模システムの刷新まで。目的に合わせた最適な技術とチームで、価値あるソフトウェアを届けます。</p>
+      </div>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A6 6 0 0 0 6.34 9.5 4 4 0 0 0 6.5 19z"/></svg></div>
+          <h3>クラウドシステム開発</h3>
+          <p>AWS・Google Cloud・Azure を活用したスケーラブルなシステムを設計・構築。オンプレミスからの移行もお任せください。</p>
+          <div class="tags"><span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Kubernetes</span></div>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+          <h3>Web・モバイルアプリ</h3>
+          <p>使いやすさを追求したUI/UXデザインと堅牢な実装で、ユーザーに愛されるサービスを形にします。</p>
+          <div class="tags"><span class="tag">React</span><span class="tag">Flutter</span><span class="tag">TypeScript</span></div>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a3 3 0 0 1 3 3v1a3 3 0 0 1-1 5.83V17a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-.17A3 3 0 0 1 5 11v-1a3 3 0 0 1 3-3V6a4 4 0 0 1 4-4z"/><path d="M9 12h.01M15 12h.01M10 16h4"/></svg></div>
+          <h3>AI・データ活用</h3>
+          <p>生成AIの業務組み込み、需要予測、データ基盤の構築まで。データを意思決定の力に変えます。</p>
+          <div class="tags"><span class="tag">LLM</span><span class="tag">Python</span><span class="tag">BigQuery</span></div>
+        </article>
+        <article class="card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <h3>DX推進・運用保守</h3>
+          <p>業務分析から伴走するDXコンサルティングと、24時間365日の監視体制による安定運用を提供します。</p>
+          <div class="tags"><span class="tag">SRE</span><span class="tag">セキュリティ</span><span class="tag">コンサル</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="alt">
+    <div class="container split">
+      <div class="reveal">
+        <div class="section-head">
+          <p class="eyebrow">Why Skyline</p>
+          <h2>選ばれる、3つの理由</h2>
+        </div>
+        <ul class="strengths">
+          <li><span class="no">01</span><div><h3>上流から運用まで一気通貫</h3><p>要件定義・設計・開発・テスト・運用を社内チームで完結。情報の分断がなく、スピーディーに品質の高い開発を実現します。</p></div></li>
+          <li><span class="no">02</span><div><h3>アジャイルで、変化に強く</h3><p>2週間単位のスプリントで動くソフトウェアを継続的にお届け。市場や要望の変化に柔軟に対応します。</p></div></li>
+          <li><span class="no">03</span><div><h3>技術力への継続投資</h3><p>全エンジニアが年間100時間以上の学習時間を確保。最新技術をいち早く検証し、お客様の課題解決に活かしています。</p></div></li>
+        </ul>
+      </div>
+      <div class="visual reveal" aria-hidden="true">
+        <div class="code-window">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div><span class="c">// 未来をつくるコード</span></div>
+          <div><span class="k">const</span> skyline = <span class="f">createTeam</span>({</div>
+          <div>&nbsp;&nbsp;mission: <span class="s">"挑戦を、かたちに"</span>,</div>
+          <div>&nbsp;&nbsp;values: [<span class="s">"誠実"</span>, <span class="s">"探究"</span>, <span class="s">"共創"</span>],</div>
+          <div>});</div>
+          <div>&nbsp;</div>
+          <div><span class="k">await</span> skyline.<span class="f">build</span>(yourIdea);</div>
+          <div><span class="c">// → 🚀 deployed successfully</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section id="process">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Process</p>
+        <h2>開発の流れ</h2>
+        <p>はじめての開発依頼でも安心。各ステップで専任のプロジェクトマネージャーが伴走します。</p>
+      </div>
+      <div class="process">
+        <div class="step reveal"><h3>ヒアリング</h3><p>課題やゴール、予算感を丁寧に伺います。</p></div>
+        <div class="step reveal"><h3>ご提案・お見積り</h3><p>最適な技術構成とスケジュールをご提示。</p></div>
+        <div class="step reveal"><h3>設計・デザイン</h3><p>要件を整理し、画面とシステムを設計。</p></div>
+        <div class="step reveal"><h3>開発・テスト</h3><p>スプリントごとに成果物をご確認いただきます。</p></div>
+        <div class="step reveal"><h3>リリース・運用</h3><p>公開後も改善と保守で成長を支えます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Works -->
+  <section id="works" class="alt">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Case Studies</p>
+        <h2>導入事例</h2>
+        <p>業界を問わず、さまざまなお客様のビジネスを支えてきました。</p>
+      </div>
+      <div class="works">
+        <article class="work reveal">
+          <div class="work-thumb t1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l2.4 12.2a2 2 0 0 0 2 1.8h8.2a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg></div>
+          <div class="work-body">
+            <p class="work-cat">小売業 ／ ECプラットフォーム</p>
+            <h3>月間500万PVのECサイトをクラウド刷新</h3>
+            <p>セール時のアクセス集中にも耐えるアーキテクチャへ移行し、表示速度を60%改善しました。</p>
+          </div>
+        </article>
+        <article class="work reveal">
+          <div class="work-thumb t2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></div>
+          <div class="work-body">
+            <p class="work-cat">金融業 ／ 生成AI活用</p>
+            <h3>社内問い合わせAIアシスタントの導入</h3>
+            <p>社内規程を学習したAIチャットにより、バックオフィスへの問い合わせ工数を40%削減。</p>
+          </div>
+        </article>
+        <article class="work reveal">
+          <div class="work-thumb t3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="7" width="15" height="11" rx="1"/><path d="M16 10h4l3 3v5h-7"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></div>
+          <div class="work-body">
+            <p class="work-cat">物流業 ／ モバイルアプリ</p>
+            <h3>配送ドライバー向け業務アプリ開発</h3>
+            <p>ルート最適化と電子サインを搭載したアプリで、1日あたりの配送件数を25%向上。</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">News</p>
+        <h2>お知らせ</h2>
+      </div>
+      <ul class="news reveal">
+        <li><time datetime="2026-11-10">2026.11.10</time><span class="label">プレス</span><span>生成AI導入支援パッケージ「Skyline AI Starter」の提供を開始しました</span></li>
+        <li><time datetime="2026-10-01">2026.10.01</time><span class="label">会社情報</span><span>福岡オフィスを開設しました</span></li>
+        <li><time datetime="2026-08-20">2026.08.20</time><span class="label">イベント</span><span>「クラウドネイティブ・カンファレンス 2026」に登壇しました</span></li>
+        <li><time datetime="2026-06-05">2026.06.05</time><span class="label">採用</span><span>2027年度 新卒エンジニア採用のエントリー受付を開始しました</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Company -->
+  <section id="company" class="alt">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Company</p>
+        <h2>会社概要</h2>
+      </div>
+      <div class="split">
+        <table class="company-table reveal">
+          <tbody>
+            <tr><th>会社名</th><td>スカイライン・テクノロジーズ株式会社<br><span style="color:var(--muted);font-size:13px">Skyline Technologies Inc.</span></td></tr>
+            <tr><th>設立</th><td>2011年4月</td></tr>
+            <tr><th>代表者</th><td>代表取締役 高峰 翔</td></tr>
+            <tr><th>資本金</th><td>1億円</td></tr>
+            <tr><th>従業員数</th><td>180名（2026年10月時点）</td></tr>
+            <tr><th>所在地</th><td>〒100-0000 東京都千代田区丸の内1-1-1<br>スカイタワー 24F</td></tr>
+            <tr><th>拠点</th><td>東京本社 ／ 大阪オフィス ／ 福岡オフィス</td></tr>
+            <tr><th>事業内容</th><td>ソフトウェア受託開発、クラウドインテグレーション、AIソリューション、ITコンサルティング</td></tr>
+          </tbody>
+        </table>
+        <div class="map reveal" aria-hidden="true">
+          <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+            <g stroke="var(--line)" stroke-width="10" fill="none">
+              <path d="M-10 90 H410"/><path d="M-10 210 H410"/><path d="M120 -10 V310"/><path d="M290 -10 V310"/>
+            </g>
+            <g stroke="var(--line)" stroke-width="4" fill="none" opacity=".7">
+              <path d="M-10 150 H410"/><path d="M200 -10 V310"/><path d="M40 -10 L360 310"/>
+            </g>
+          </svg>
+          <div class="map-pin"><strong>📍 東京本社</strong>丸の内駅 徒歩3分</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <div class="container">
+      <div class="section-head center reveal">
+        <p class="eyebrow">Contact</p>
+        <h2>お問い合わせ</h2>
+        <p>開発のご相談・お見積りは無料です。2営業日以内に担当者よりご連絡いたします。</p>
+      </div>
+      <form id="contactForm" class="reveal" novalidate>
+        <div class="row">
+          <div><label for="company">会社名</label><input id="company" name="company" autocomplete="organization" placeholder="例）株式会社サンプル"></div>
+          <div><label for="name">お名前<span class="req">必須</span></label><input id="name" name="name" required autocomplete="name" placeholder="例）山田 太郎"></div>
+        </div>
+        <div class="row">
+          <div><label for="email">メールアドレス<span class="req">必須</span></label><input id="email" name="email" type="email" required autocomplete="email" placeholder="example@example.com"></div>
+          <div><label for="type">ご相談内容</label>
+            <select id="type" name="type">
+              <option>新規システム開発</option>
+              <option>既存システムの改修・移行</option>
+              <option>AI・データ活用</option>
+              <option>運用保守</option>
+              <option>採用について</option>
+              <option>その他</option>
+            </select>
+          </div>
+        </div>
+        <div><label for="message">お問い合わせ内容<span class="req">必須</span></label><textarea id="message" name="message" required placeholder="ご相談内容をご自由にご記入ください"></textarea></div>
+        <button type="submit" class="btn">送信する</button>
+        <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <a href="#top" class="logo">
+        <svg class="logo-mark" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+          <rect width="40" height="40" rx="10" fill="url(#lg)"/>
+          <path d="M8 30V22h5v-6h5v-8h4v8h5v4h5v10z" fill="#fff"/>
+        </svg>
+        <span>SKYLINE<small>TECHNOLOGIES</small></span>
+      </a>
+      <nav aria-label="フッターナビゲーション">
+        <a href="#services">事業内容</a>
+        <a href="#about">私たちの強み</a>
+        <a href="#works">導入事例</a>
+        <a href="#company">会社概要</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+    </div>
+    <p class="copy">&copy; 2026 Skyline Technologies Inc. All rights reserved.<br>※ 本サイトは架空の企業のデモサイトです。</p>
+  </div>
+</footer>
+
+<script>
+  // ヘッダーのスクロール時スタイル
+  const header = document.getElementById('header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 20);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // モバイルメニュー
+  const menuBtn = document.getElementById('menuBtn');
+  const navLinks = document.getElementById('navLinks');
+  menuBtn.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open);
+    header.classList.add('scrolled');
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }));
+
+  // お知らせバー：4秒ごとに切り替え（ホバー中は停止）
+  const notice = document.getElementById('notice');
+  const items = [...notice.querySelectorAll('.notice-item')];
+  let idx = 0, paused = false;
+  const rotate = () => {
+    if (paused || items.length < 2) return;
+    const cur = items[idx];
+    idx = (idx + 1) % items.length;
+    const next = items[idx];
+    cur.classList.add('leaving');
+    cur.classList.remove('active');
+    next.classList.remove('leaving');
+    next.classList.add('active');
+    setTimeout(() => cur.classList.remove('leaving'), 500);
+  };
+  const timer = setInterval(rotate, 4000);
+  notice.addEventListener('mouseenter', () => paused = true);
+  notice.addEventListener('mouseleave', () => paused = false);
+  notice.addEventListener('focusin', () => paused = true);
+  notice.addEventListener('focusout', () => paused = false);
+  document.getElementById('noticeClose').addEventListener('click', () => {
+    notice.hidden = true;
+    clearInterval(timer);
+    document.documentElement.classList.add('notice-closed');
+  });
+
+  // スクロール表示アニメーション & 数字カウントアップ
+  const countUp = el => {
+    const target = +el.dataset.count;
+    const suffix = el.querySelector('small').outerHTML;
+    const start = performance.now();
+    const dur = 1400;
+    const tick = now => {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.innerHTML = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.classList.add('in');
+      e.target.querySelectorAll('[data-count]').forEach(countUp);
+      io.unobserve(e.target);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // お問い合わせフォーム（デモ）
+  const form = document.getElementById('contactForm');
+  const msg = document.getElementById('formMsg');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      msg.style.color = '#e5484d';
+      msg.textContent = '必須項目を正しく入力してください。';
+      form.querySelector(':invalid').focus();
+      return;
+    }
+    msg.style.color = '';
+    msg.textContent = 'お問い合わせありがとうございます。担当者よりご連絡いたします。（デモのため送信はされません）';
+    form.reset();
+  });
+</script>
+</body>
+</html>
